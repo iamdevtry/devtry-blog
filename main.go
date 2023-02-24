@@ -41,6 +41,7 @@ func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey
 	v1 := route.Group("/v1")
 
 	v1.POST("/upload", uploadtrans.Upload(appContext))
+	v1.DELETE("/delete/:id", uploadtrans.Delete(appContext))
 
 	v1.POST("/register", usertrans.Register(appContext))
 	v1.POST("/login", usertrans.Login(appContext))

@@ -40,3 +40,11 @@ func ErrCannotSaveFile(err error) *common.AppError {
 		"ErrCannotSaveFile",
 	)
 }
+
+func ErrCannotDeleteFile(err error) *common.AppError {
+	return common.NewCustomError(
+		err,
+		"cannot delete file",
+		"ErrCannotDeleteFile",
+	)
+}
