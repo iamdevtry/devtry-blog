@@ -29,6 +29,7 @@ func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey
 
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
 
 	route.Use(cors.New(config), middleware.Recover(appContext))
 
