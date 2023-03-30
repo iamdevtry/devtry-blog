@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 	"github.com/iamdevtry/blog/component"
 	posttagbusiness "github.com/iamdevtry/blog/modules/posttag/business"
@@ -14,15 +15,10 @@ import (
 
 func ListPostByCategory(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		uid, err := common.FromBase58(c.Param("id"))
-		// id, err := strconv.Atoi(c.Param("id"))
-
-		if err != nil {
-			panic(common.ErrInvalidRequest(err))
-		}
+		uid := c.Param("id")
 
 		filter := posttagmodel.Filter{
-			TagId: int(uid.GetLocalID()),
+			TagId: uuid.MustParse(uid),
 		}
 
 		var paging common.Paging
@@ -41,10 +37,6 @@ func ListPostByCategory(appCtx component.AppContext) gin.HandlerFunc {
 
 		if err != nil {
 			panic(err)
-		}
-
-		for i := range result {
-			result[i].Mask(false)
 		}
 
 		c.JSON(http.StatusOK, common.NewSuccessResponse(result, paging, filter))

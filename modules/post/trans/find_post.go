@@ -13,18 +13,16 @@ import (
 
 func GetPostById(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		uid, _ := common.FromBase58(c.Param("id"))
+		uuid := c.Param("id")
 
 		store := poststore.NewSqlStore(appCtx.GetDBConn())
 		repo := postrepo.NewFindPostRepo(store)
 		biz := postbusiness.NewFindPostBusiness(repo)
 
-		data, err := biz.FindPostById(c.Request.Context(), int(uid.GetLocalID()))
+		data, err := biz.FindPostById(c.Request.Context(), uuid)
 		if err != nil {
 			panic(err)
 		}
-
-		data.Mask(false)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 	}

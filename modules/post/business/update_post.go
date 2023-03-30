@@ -8,7 +8,7 @@ import (
 )
 
 type UpdatePostRepo interface {
-	UpdatePost(ctx context.Context, id int, data *postmodel.PostUpdate) error
+	UpdatePost(ctx context.Context, id string, data *postmodel.PostUpdate) error
 }
 
 type updatePostBusiness struct {
@@ -19,7 +19,7 @@ func NewUpdatePostBusiness(repo UpdatePostRepo) *updatePostBusiness {
 	return &updatePostBusiness{repo: repo}
 }
 
-func (b *updatePostBusiness) UpdatePost(ctx context.Context, id int, data *postmodel.PostUpdate) error {
+func (b *updatePostBusiness) UpdatePost(ctx context.Context, id string, data *postmodel.PostUpdate) error {
 	if err := b.repo.UpdatePost(ctx, id, data); err != nil {
 		return common.ErrCannotUpdatedEntity(postmodel.EntityName, err)
 	}

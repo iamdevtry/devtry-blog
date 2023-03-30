@@ -8,7 +8,7 @@ import (
 )
 
 type DeletePostRepo interface {
-	SoftDeletePost(ctx context.Context, id int) error
+	SoftDeletePost(ctx context.Context, id string) error
 }
 
 type deletePostBusiness struct {
@@ -19,7 +19,7 @@ func NewDeletePostBusiness(repo DeletePostRepo) *deletePostBusiness {
 	return &deletePostBusiness{repo: repo}
 }
 
-func (b *deletePostBusiness) DeletePost(ctx context.Context, id int) error {
+func (b *deletePostBusiness) DeletePost(ctx context.Context, id string) error {
 	if err := b.repo.SoftDeletePost(ctx, id); err != nil {
 		return common.ErrCannotDeletedEntity(postmodel.EntityName, err)
 	}

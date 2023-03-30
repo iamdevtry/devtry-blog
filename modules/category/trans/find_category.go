@@ -11,19 +11,16 @@ import (
 
 func FindCategoryById(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		uid, _ := common.FromBase58(c.Param("id"))
+		uuid := c.Param("id")
 
 		store := categorystore.NewSqlStore(appCtx.GetDBConn())
 		repo := categoryrepo.NewFindCategoryRepo(store)
 		biz := categorybusiness.NewFindCategoryBusiness(repo)
 
-		result, err := biz.FindCategoryById(c.Request.Context(), int(uid.GetLocalID()))
+		result, err := biz.FindCategoryById(c.Request.Context(), uuid)
 		if err != nil {
 			panic(err)
 		}
-
-		//Mask id to uid
-		result.Mask(false)
 
 		c.JSON(200, common.SimpleSuccessResponse(result))
 	}

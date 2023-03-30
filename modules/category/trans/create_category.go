@@ -19,14 +19,6 @@ func CreateCategory(appCtx component.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		if data.ParentId != 0 {
-			uParentId, err := common.FromBase58(data.FakeParentId.String())
-			if err != nil {
-				panic(err)
-			}
-			data.ParentId = int(uParentId.GetLocalID())
-		}
-
 		store := categorystore.NewSqlStore(appCtx.GetDBConn())
 		repo := categoryrepo.NewCreateCategoryRepo(store)
 		biz := categorybusiness.NewCreateCategoryBusiness(repo)

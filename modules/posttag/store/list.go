@@ -3,6 +3,7 @@ package posttagstore
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 	posttagmodel "github.com/iamdevtry/blog/modules/posttag/model"
 )
@@ -20,7 +21,7 @@ func (s *sqlStore) ListPostTagByCondition(ctx context.Context,
 	db = db.Table(posttagmodel.PostTag{}.TableName()).Where(conditions)
 
 	if v := filter; v != nil {
-		if v.TagId > 0 {
+		if v.TagId != uuid.Nil {
 			db = db.Where("tag_id = ?", v.TagId)
 		}
 	}

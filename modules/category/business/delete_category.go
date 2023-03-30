@@ -8,7 +8,7 @@ import (
 )
 
 type DeleteCategoryRepo interface {
-	SoftDeleteCategory(ctx context.Context, id int) error
+	SoftDeleteCategory(ctx context.Context, id string) error
 }
 
 type deleteCategoryBusiness struct {
@@ -19,7 +19,7 @@ func NewDeleteCategoryBusiness(repo DeleteCategoryRepo) *deleteCategoryBusiness 
 	return &deleteCategoryBusiness{repo: repo}
 }
 
-func (b *deleteCategoryBusiness) DeleteCategory(ctx context.Context, id int) error {
+func (b *deleteCategoryBusiness) DeleteCategory(ctx context.Context, id string) error {
 	if err := b.repo.SoftDeleteCategory(ctx, id); err != nil {
 		return common.ErrCannotDeletedEntity(categorymodel.EntityName, err)
 	}

@@ -1,9 +1,8 @@
 package posttagtrans
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 	"github.com/iamdevtry/blog/component"
 	poststore "github.com/iamdevtry/blog/modules/post/store"
@@ -17,27 +16,17 @@ import (
 func CreatePostTag(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type reqObj struct {
-			PostId string `json:"post_id"`
-			TagId  string `json:"tag_id"`
+			PostId uuid.UUID `json:"post_id"`
+			TagId  uuid.UUID `json:"tag_id"`
 		}
 		var req reqObj
 		if err := c.ShouldBindJSON(&req); err != nil {
 			panic(err)
 		}
 
-		postId, err := common.FromBase58(fmt.Sprintf("%v", req.PostId))
-		if err != nil {
-			panic(err)
-		}
-
-		tagId, err := common.FromBase58(fmt.Sprintf("%v", req.TagId))
-		if err != nil {
-			panic(err)
-		}
-
 		data := posttagmodel.PostTag{
-			PostId: int(postId.GetLocalID()),
-			TagId:  int(tagId.GetLocalID()),
+			PostId: req.PostId,
+			TagId:  req.TagId,
 		}
 
 		store := posttagstore.NewSqlStore(appCtx.GetDBConn())

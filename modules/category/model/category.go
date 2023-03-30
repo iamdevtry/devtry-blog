@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 )
 
@@ -22,11 +23,11 @@ const (
 // Category model
 type Category struct {
 	common.SQLModel `json:",inline"`
-	// ParentId        int    `json:"parent_id" gorm:"column:parent_id;"`
-	Title     string `json:"title" gorm:"column:title;"`
-	MetaTitle string `json:"meta_title" gorm:"column:meta_title;"`
-	Slug      string `json:"slug" gorm:"column:slug;"`
-	Content   string `json:"content" gorm:"column:content;"`
+	ParentId        *uuid.UUID `json:"parent_id,omitempty" gorm:"column:parent_id;"`
+	Title           string     `json:"title" gorm:"column:title;"`
+	MetaTitle       string     `json:"meta_title" gorm:"column:meta_title;"`
+	Slug            string     `json:"slug" gorm:"column:slug;"`
+	Content         string     `json:"content" gorm:"column:content;"`
 }
 
 // Category method TableName
@@ -37,10 +38,11 @@ func (Category) TableName() string {
 // CategoryCreate model
 type CategoryCreate struct {
 	common.SQLModel `json:",inline"`
-	Title           string `json:"title" gorm:"column:title;"`
-	MetaTitle       string `json:"meta_title" gorm:"column:meta_title;"`
-	Slug            string `json:"slug" gorm:"column:slug;"`
-	Content         string `json:"content" gorm:"column:content;"`
+	ParentId        *uuid.UUID `json:"parent_id" gorm:"column:parent_id;"`
+	Title           string     `json:"title" gorm:"column:title;"`
+	MetaTitle       string     `json:"meta_title" gorm:"column:meta_title;"`
+	Slug            string     `json:"slug" gorm:"column:slug;"`
+	Content         string     `json:"content" gorm:"column:content;"`
 }
 
 // CategoryCreate method TableName
@@ -51,10 +53,11 @@ func (CategoryCreate) TableName() string {
 // CategoryUpdate model
 type CategoryUpdate struct {
 	common.SQLModel `json:",inline"`
-	Title           string `json:"title" gorm:"column:title;"`
-	MetaTitle       string `json:"meta_title" gorm:"column:meta_title;"`
-	Slug            string `json:"slug" gorm:"column:slug;"`
-	Content         string `json:"content" gorm:"column:content;"`
+	ParentId        *uuid.UUID `json:"parent_id" gorm:"column:parent_id;"`
+	Title           string     `json:"title" gorm:"column:title;"`
+	MetaTitle       string     `json:"meta_title" gorm:"column:meta_title;"`
+	Slug            string     `json:"slug" gorm:"column:slug;"`
+	Content         string     `json:"content" gorm:"column:content;"`
 }
 
 // CategoryUpdate method TableName
@@ -108,12 +111,4 @@ func (category *CategoryUpdate) Validate() error {
 	}
 
 	return nil
-}
-
-func (cat *Category) Mask(isAdminOrOwner bool) {
-	cat.GenUID(common.DBTypeCategory)
-
-	// if u := cat.User; u != nil {
-	// 	u.Mask(isAdminOrOwner)
-	// }
 }

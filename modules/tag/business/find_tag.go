@@ -20,7 +20,7 @@ func NewFindTagBusiness(repo FindTagRepo) *findTagBusiness {
 	return &findTagBusiness{repo: repo}
 }
 
-func (b *findTagBusiness) FindTagById(ctx context.Context, id int) (data *tagmodel.Tag, err error) {
+func (b *findTagBusiness) FindTagById(ctx context.Context, id string) (data *tagmodel.Tag, err error) {
 	data, err = b.repo.FindTag(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {

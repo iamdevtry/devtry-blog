@@ -10,7 +10,7 @@ import (
 
 type DeleteCategoryStore interface {
 	Find(ctx context.Context, cond map[string]interface{}) (*categorymodel.Category, error)
-	SoftDelete(ctx context.Context, id int) error
+	SoftDelete(ctx context.Context, id string) error
 }
 
 type deleteCategoryRepo struct {
@@ -21,7 +21,7 @@ func NewDeleteCategoryStore(store DeleteCategoryStore) *deleteCategoryRepo {
 	return &deleteCategoryRepo{store: store}
 }
 
-func (repo *deleteCategoryRepo) SoftDeleteCategory(ctx context.Context, id int) error {
+func (repo *deleteCategoryRepo) SoftDeleteCategory(ctx context.Context, id string) error {
 	oldData, err := repo.store.Find(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {

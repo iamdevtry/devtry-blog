@@ -20,7 +20,7 @@ func NewFindPostBusiness(repo FindPostRepo) *findPostBusiness {
 	return &findPostBusiness{repo: repo}
 }
 
-func (b *findPostBusiness) FindPostById(ctx context.Context, id int) (data *postmodel.Post, err error) {
+func (b *findPostBusiness) FindPostById(ctx context.Context, id string) (data *postmodel.Post, err error) {
 	data, err = b.repo.FindPost(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {

@@ -14,18 +14,16 @@ import (
 func GetTagById(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// id, err := strconv.Atoi(c.Param("id"))
-		uid, _ := common.FromBase58(c.Param("id"))
+		uid := c.Param("id")
 
 		store := tagstore.NewSqlStore(appCtx.GetDBConn())
 		repo := tagrepo.NewFindTagRepo(store)
 		biz := tagbusiness.NewFindTagBusiness(repo)
 
-		data, err := biz.FindTagById(c.Request.Context(), int(uid.GetLocalID()))
+		data, err := biz.FindTagById(c.Request.Context(), uid)
 		if err != nil {
 			panic(err)
 		}
-
-		data.Mask(false)
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 	}

@@ -21,11 +21,6 @@ func ListCategory(appCtx component.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		//Mask id to uid
-		for i := range result {
-			result[i].Mask(false)
-		}
-
 		c.JSON(200, common.SimpleSuccessResponse(result))
 	}
 }

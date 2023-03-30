@@ -10,7 +10,7 @@ import (
 
 type UpdateTagStore interface {
 	FindTag(ctx context.Context, cond map[string]interface{}) (*tagmodel.Tag, error)
-	Update(ctx context.Context, id int, data *tagmodel.TagUpdate) error
+	Update(ctx context.Context, id string, data *tagmodel.TagUpdate) error
 }
 
 type updateTagRepo struct {
@@ -21,7 +21,7 @@ func NewUpdateTagRepo(store UpdateTagStore) *updateTagRepo {
 	return &updateTagRepo{store: store}
 }
 
-func (r *updateTagRepo) UpdateTag(ctx context.Context, id int, data *tagmodel.TagUpdate) error {
+func (r *updateTagRepo) UpdateTag(ctx context.Context, id string, data *tagmodel.TagUpdate) error {
 	oldData, err := r.store.FindTag(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {

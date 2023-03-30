@@ -1,5 +1,7 @@
 package common
 
+import "github.com/google/uuid"
+
 const (
 	DBTypeCategory = 1
 	DBTypePost     = 2
@@ -10,7 +12,7 @@ const (
 const CurrentUser = "user"
 
 type Requester interface {
-	GetUserId() int
+	GetUserId() uuid.UUID
 	GetEmail() string
 	GetRole() string
 }

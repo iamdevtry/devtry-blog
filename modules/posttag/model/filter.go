@@ -1,6 +1,8 @@
 package posttagmodel
 
+import "github.com/google/uuid"
+
 type Filter struct {
-	TagId  int `json:"-" gorm:"column:tag_id"`
-	PostId int `json:"-" gorm:"column:post_id"`
+	TagId  uuid.UUID `json:"-" gorm:"column:tag_id"`
+	PostId uuid.UUID `json:"-" gorm:"column:post_id"`
 }

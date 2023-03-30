@@ -11,13 +11,13 @@ import (
 
 func DeletePost(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		uid, _ := common.FromBase58(c.Param("id"))
+		uuid := c.Param("id")
 
 		store := poststore.NewSqlStore(appCtx.GetDBConn())
 		repo := postrepo.NewDeletePostStore(store)
 		biz := postbiz.NewDeletePostBusiness(repo)
 
-		if err := biz.DeletePost(c.Request.Context(), int(uid.GetLocalID())); err != nil {
+		if err := biz.DeletePost(c.Request.Context(), uuid); err != nil {
 			panic(err)
 		}
 

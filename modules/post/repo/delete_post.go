@@ -10,7 +10,7 @@ import (
 
 type DeletePostStore interface {
 	Find(ctx context.Context, cond map[string]interface{}) (*postmodel.Post, error)
-	SoftDelete(ctx context.Context, id int) error
+	SoftDelete(ctx context.Context, id string) error
 }
 
 type deletePostRepo struct {
@@ -21,7 +21,7 @@ func NewDeletePostStore(store DeletePostStore) *deletePostRepo {
 	return &deletePostRepo{store: store}
 }
 
-func (repo *deletePostRepo) SoftDeletePost(ctx context.Context, id int) error {
+func (repo *deletePostRepo) SoftDeletePost(ctx context.Context, id string) error {
 	oldData, err := repo.store.Find(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {

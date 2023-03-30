@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 )
 
@@ -22,7 +23,8 @@ const (
 
 type Post struct {
 	common.SQLModel `json:",inline"`
-	AuthorId        int           `json:"author_id" gorm:"column:author_id;"`
+	ParentId        *uuid.UUID    `json:"parent_id,omitempty" gorm:"column:parent_id;"`
+	AuthorId        uuid.UUID     `json:"author_id" gorm:"column:author_id;"`
 	Title           string        `json:"title" gorm:"column:title;"`
 	MetaTitle       string        `json:"meta_title" gorm:"column:meta_title;"`
 	Slug            string        `json:"slug" gorm:"column:slug;"`
@@ -38,7 +40,8 @@ func (Post) TableName() string {
 
 type PostCreate struct {
 	common.SQLModel `json:",inline"`
-	AuthorId        int           `json:"author_id" gorm:"column:author_id;"`
+	ParentId        *uuid.UUID    `json:"parent_id" gorm:"column:parent_id;"`
+	AuthorId        uuid.UUID     `json:"author_id" gorm:"column:author_id;"`
 	Title           string        `json:"title" gorm:"column:title;"`
 	MetaTitle       string        `json:"meta_title" gorm:"column:meta_title;"`
 	Slug            string        `json:"slug" gorm:"column:slug;"`
@@ -53,7 +56,8 @@ func (PostCreate) TableName() string {
 
 type PostUpdate struct {
 	common.SQLModel `json:",inline"`
-	AuthorId        *int          `json:"author_id" gorm:"column:author_id;"`
+	ParentId        *uuid.UUID    `json:"parent_id" gorm:"column:parent_id;"`
+	AuthorId        uuid.UUID     `json:"author_id" gorm:"column:author_id;"`
 	Title           string        `json:"title" gorm:"column:title;"`
 	MetaTitle       string        `json:"meta_title" gorm:"column:meta_title;"`
 	Slug            string        `json:"slug" gorm:"column:slug;"`
@@ -112,12 +116,4 @@ func (post *PostUpdate) Validate() error {
 	}
 
 	return nil
-}
-
-func (data *Post) Mask(isAdminOrOwner bool) {
-	data.GenUID(common.DBTypePost)
-
-	// if u := data.User; u != nil {
-	// 	u.Mask(isAdminOrOwner)
-	// }
 }

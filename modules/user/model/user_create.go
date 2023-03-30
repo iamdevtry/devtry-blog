@@ -16,17 +16,18 @@ const (
 )
 
 type UserCreate struct {
-	FirstName  string     `json:"first_name" gorm:"column:first_name;"`
-	MiddleName string     `json:"middle_name" gorm:"column:middle_name;"`
-	LastName   string     `json:"last_name" gorm:"column:last_name;"`
-	Mobile     string     `json:"mobile" gorm:"column:mobile;"`
-	Email      string     `json:"email" gorm:"column:email;"`
-	Password   string     `json:"password" gorm:"column:password;"`
-	Salt       string     `json:"-" gorm:"column:salt;"`
-	Role       string     `json:"-" gorm:"column:role;"`
-	CreatedAt  *time.Time `json:"created_at,omitempty" gorm:"column:created_at;"`
-	UpdatedAt  *time.Time `json:"updated_at,omitempty" gorm:"column:updated_at;"`
-	Status     int        `json:"status" gorm:"column:status;default:1"`
+	common.SQLModel `json:",inline"`
+	FirstName       string     `json:"first_name" gorm:"column:first_name;"`
+	MiddleName      string     `json:"middle_name" gorm:"column:middle_name;"`
+	LastName        string     `json:"last_name" gorm:"column:last_name;"`
+	Mobile          string     `json:"mobile" gorm:"column:mobile;"`
+	Email           string     `json:"email" gorm:"column:email;"`
+	Password        string     `json:"password" gorm:"column:password;"`
+	Salt            string     `json:"-" gorm:"column:salt;"`
+	Role            string     `json:"-" gorm:"column:role;"`
+	CreatedAt       *time.Time `json:"created_at,omitempty" gorm:"column:created_at;"`
+	UpdatedAt       *time.Time `json:"updated_at,omitempty" gorm:"column:updated_at;"`
+	Status          int        `json:"status" gorm:"column:status;default:1"`
 }
 
 func (UserCreate) TableName() string {
