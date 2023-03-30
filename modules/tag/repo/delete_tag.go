@@ -10,7 +10,7 @@ import (
 
 type DeleteTagStore interface {
 	FindTag(ctx context.Context, cond map[string]interface{}) (*tagmodel.Tag, error)
-	SoftDelete(ctx context.Context, id int) error
+	SoftDelete(ctx context.Context, id string) error
 }
 
 type deleteTagRepo struct {
@@ -21,7 +21,7 @@ func NewDeleteTagStore(store DeleteTagStore) *deleteTagRepo {
 	return &deleteTagRepo{store: store}
 }
 
-func (repo *deleteTagRepo) SoftDeleteTag(ctx context.Context, id int) error {
+func (repo *deleteTagRepo) SoftDeleteTag(ctx context.Context, id string) error {
 	oldData, err := repo.store.FindTag(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {

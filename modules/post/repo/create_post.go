@@ -27,7 +27,7 @@ func (r *createPostRepo) CreatePost(ctx context.Context, data *postmodel.PostCre
 		return common.ErrCannotCreateEntity(postmodel.EntityName, err)
 	}
 
-	if data.ParentId != 0 {
+	if data.ParentId != nil {
 		parentPost, err := r.store.Find(ctx, map[string]interface{}{"id": data.ParentId})
 
 		if err != nil {

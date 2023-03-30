@@ -7,7 +7,7 @@ import (
 	categorymodel "github.com/iamdevtry/blog/modules/category/model"
 )
 
-func (s *sqlStore) Update(ctx context.Context, id int, data *categorymodel.CategoryUpdate) error {
+func (s *sqlStore) Update(ctx context.Context, id string, data *categorymodel.CategoryUpdate) error {
 	if err := s.db.Table(categorymodel.CategoryUpdate{}.TableName()).Where("id = ?", id).
 		Updates(map[string]interface{}{
 			"parent_id":  data.ParentId,

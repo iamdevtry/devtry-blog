@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 )
 
@@ -26,7 +27,7 @@ type User struct {
 	// Cover           string     `json:"cover" gorm:"column:cover;"`
 }
 
-func (u *User) GetUserId() int {
+func (u *User) GetUserId() uuid.UUID {
 	return u.Id
 }
 
@@ -40,10 +41,6 @@ func (u *User) GetRole() string {
 
 func (User) TableName() string {
 	return "users"
-}
-
-func (u *User) Mask(isAdmin bool) {
-	u.GenUID(common.DBTypeUser)
 }
 
 var (

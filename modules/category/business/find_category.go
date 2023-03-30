@@ -22,7 +22,7 @@ func NewFindCategoryBusiness(repo FindCategoryRepo) *findCategoryBusiness {
 
 func (b *findCategoryBusiness) FindCategoryById(
 	ctx context.Context,
-	id int,
+	id string,
 ) (*categorymodel.Category, error) {
 	data, err := b.repo.FindCategory(ctx, map[string]interface{}{"id": id})
 

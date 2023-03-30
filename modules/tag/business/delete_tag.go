@@ -8,7 +8,7 @@ import (
 )
 
 type DeleteTagRepo interface {
-	SoftDeleteTag(ctx context.Context, id int) error
+	SoftDeleteTag(ctx context.Context, id string) error
 }
 
 type deleteTagBusiness struct {
@@ -19,7 +19,7 @@ func NewDeleteTagBusiness(repo DeleteTagRepo) *deleteTagBusiness {
 	return &deleteTagBusiness{repo: repo}
 }
 
-func (b *deleteTagBusiness) DeleteTag(ctx context.Context, id int) error {
+func (b *deleteTagBusiness) DeleteTag(ctx context.Context, id string) error {
 	if err := b.repo.SoftDeleteTag(ctx, id); err != nil {
 		return common.ErrCannotDeletedEntity(tagmodel.EntityName, err)
 	}

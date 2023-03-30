@@ -1,9 +1,8 @@
 package postcategorytrans
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 	"github.com/iamdevtry/blog/component"
 	categorystore "github.com/iamdevtry/blog/modules/category/store"
@@ -17,27 +16,17 @@ import (
 func CreatePostCategory(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		type reqObj struct {
-			PostId     string `json:"post_id"`
-			CategoryId string `json:"category_id"`
+			PostId     uuid.UUID `json:"post_id"`
+			CategoryId uuid.UUID `json:"category_id"`
 		}
 		var req reqObj
 		if err := c.ShouldBindJSON(&req); err != nil {
 			panic(err)
 		}
 
-		postId, err := common.FromBase58(fmt.Sprintf("%v", req.PostId))
-		if err != nil {
-			panic(err)
-		}
-
-		catId, err := common.FromBase58(fmt.Sprintf("%v", req.CategoryId))
-		if err != nil {
-			panic(err)
-		}
-
 		data := postcategorymodel.PostCategory{
-			PostId:     int(postId.GetLocalID()),
-			CategoryId: int(catId.GetLocalID()),
+			PostId:     req.PostId,
+			CategoryId: req.CategoryId,
 		}
 
 		store := postcategorystore.NewSqlStore(appCtx.GetDBConn())

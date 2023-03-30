@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 )
 
@@ -37,6 +38,6 @@ type Token struct {
 }
 
 type TokenPayload struct {
-	UserId int    `json:"user_id"`
-	Role   string `json:"role"`
+	UserId uuid.UUID `json:"user_id"`
+	Role   string    `json:"role"`
 }

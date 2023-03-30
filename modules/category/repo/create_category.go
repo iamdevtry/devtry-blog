@@ -31,7 +31,7 @@ func (r *createCategoryRepo) CreateCategory(ctx context.Context, data *categorym
 		return common.ErrCannotCreateEntity(categorymodel.EntityName, err)
 	}
 
-	if data.ParentId != 0 {
+	if data.ParentId != nil {
 		parentCat, err := r.store.Find(ctx, map[string]interface{}{"id": data.ParentId})
 
 		if err != nil {

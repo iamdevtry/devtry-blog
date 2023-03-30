@@ -3,6 +3,7 @@ package postcategorystore
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 	postcategorymodel "github.com/iamdevtry/blog/modules/postcategory/model"
 )
@@ -22,7 +23,7 @@ func (s *sqlStore) ListPostCategoryByCondition(ctx context.Context,
 	db = db.Table(postcategorymodel.PostCategory{}.TableName()).Where(conditions)
 
 	if v := filter; v != nil {
-		if v.CategoryId > 0 {
+		if v.CategoryId != uuid.Nil {
 			db = db.Where("category_id = ?", v.CategoryId)
 		}
 	}

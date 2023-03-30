@@ -8,7 +8,7 @@ import (
 )
 
 type UpdateCategoryRepo interface {
-	UpdateCategory(ctx context.Context, id int, data *categorymodel.CategoryUpdate) error
+	UpdateCategory(ctx context.Context, id string, data *categorymodel.CategoryUpdate) error
 }
 
 type updateCategoryBusiness struct {
@@ -19,7 +19,7 @@ func NewUpdateCategoryBusiness(repo UpdateCategoryRepo) *updateCategoryBusiness 
 	return &updateCategoryBusiness{repo: repo}
 }
 
-func (b *updateCategoryBusiness) UpdateCategory(ctx context.Context, id int, data *categorymodel.CategoryUpdate) error {
+func (b *updateCategoryBusiness) UpdateCategory(ctx context.Context, id string, data *categorymodel.CategoryUpdate) error {
 	if err := b.repo.UpdateCategory(ctx, id, data); err != nil {
 		return common.ErrCannotUpdatedEntity(categorymodel.EntityName, err)
 	}

@@ -21,14 +21,6 @@ func CreatePost(appCtx component.AppContext) gin.HandlerFunc {
 		requester := c.MustGet(common.CurrentUser).(common.Requester)
 		data.AuthorId = requester.GetUserId()
 
-		if data.FakeParentId != nil {
-			uParentId, err := common.FromBase58(data.FakeParentId.String())
-			if err != nil {
-				panic(err)
-			}
-			data.ParentId = int(uParentId.GetLocalID())
-		}
-
 		store := poststore.NewSqlStore(appCtx.GetDBConn())
 		repo := postrepo.NewCreatePostRepo(store)
 		biz := postbiz.NewCreatePostBusiness(repo)

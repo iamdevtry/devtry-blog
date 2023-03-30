@@ -13,7 +13,7 @@ import (
 func UpdateTag(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// id, err := strconv.Atoi(c.Param("id"))
-		uid, _ := common.FromBase58(c.Param("id"))
+		uid := c.Param("id")
 
 		var data tagmodel.TagUpdate
 		if err := c.ShouldBindJSON(&data); err != nil {
@@ -24,7 +24,7 @@ func UpdateTag(appCtx component.AppContext) gin.HandlerFunc {
 		repo := tagrepo.NewUpdateTagRepo(store)
 		biz := tagbusiness.NewUpdateTagBusiness(repo)
 
-		if err := biz.UpdateTag(c.Request.Context(), int(uid.GetLocalID()), &data); err != nil {
+		if err := biz.UpdateTag(c.Request.Context(), uid, &data); err != nil {
 			panic(err)
 		}
 

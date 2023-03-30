@@ -11,7 +11,7 @@ import (
 
 type UpdatePostStore interface {
 	Find(ctx context.Context, cond map[string]interface{}) (*postmodel.Post, error)
-	Update(ctx context.Context, id int, data *postmodel.PostUpdate) error
+	Update(ctx context.Context, id string, data *postmodel.PostUpdate) error
 }
 
 type updatePostRepo struct {
@@ -22,7 +22,7 @@ func NewUpdatePostRepo(store UpdatePostStore) *updatePostRepo {
 	return &updatePostRepo{store: store}
 }
 
-func (r *updatePostRepo) UpdatePost(ctx context.Context, id int, data *postmodel.PostUpdate) error {
+func (r *updatePostRepo) UpdatePost(ctx context.Context, id string, data *postmodel.PostUpdate) error {
 	oldData, err := r.store.Find(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
@@ -37,7 +37,7 @@ func (r *updatePostRepo) UpdatePost(ctx context.Context, id int, data *postmodel
 		return common.ErrCannotCreateEntity(postmodel.EntityName, err)
 	}
 
-	if data.ParentId != 0 {
+	if data.ParentId != nil && data.ParentId != oldData.ParentId {
 		parentPost, err := r.store.Find(ctx, map[string]interface{}{"id": data.ParentId})
 
 		if err != nil {

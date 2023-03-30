@@ -12,13 +12,13 @@ import (
 func DeleteTag(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// id, err := strconv.Atoi(c.Param("id"))
-		uid, _ := common.FromBase58(c.Param("id"))
+		uid := c.Param("id")
 
 		store := tagstore.NewSqlStore(appCtx.GetDBConn())
 		repo := tagrepo.NewDeleteTagStore(store)
 		biz := tagbiz.NewDeleteTagBusiness(repo)
 
-		if err := biz.DeleteTag(c.Request.Context(), int(uid.GetLocalID())); err != nil {
+		if err := biz.DeleteTag(c.Request.Context(), uid); err != nil {
 			panic(err)
 		}
 

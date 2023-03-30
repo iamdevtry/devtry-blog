@@ -21,10 +21,6 @@ func ListTag(appCtx component.AppContext) gin.HandlerFunc {
 			panic(err)
 		}
 
-		for i := range result {
-			result[i].Mask(false)
-		}
-
 		c.JSON(200, common.SimpleSuccessResponse(result))
 	}
 }

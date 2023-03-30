@@ -88,11 +88,3 @@ func (tag *TagUpdate) Validate() error {
 
 	return nil
 }
-
-func (data *Tag) Mask(isAdminOrOwner bool) {
-	data.GenUID(common.DBTypeTag)
-
-	// if u := data.User; u != nil {
-	// 	u.Mask(isAdminOrOwner)
-	// }
-}

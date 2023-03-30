@@ -1,6 +1,8 @@
 package postcategorymodel
 
+import "github.com/google/uuid"
+
 type Filter struct {
-	PostId     int `json:"-" gorm:"column:post_id;"`
-	CategoryId int `json:"-" gorm:"column:category_id;"`
+	PostId     uuid.UUID `json:"-" gorm:"column:post_id;"`
+	CategoryId uuid.UUID `json:"-" gorm:"column:category_id;"`
 }

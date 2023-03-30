@@ -12,26 +12,18 @@ import (
 
 func UpdateCategoryById(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		uid, _ := common.FromBase58(c.Param("id"))
+		uuid := c.Param("id")
 
 		var data categorymodel.CategoryUpdate
 		if err := c.ShouldBindJSON(&data); err != nil {
 			panic(err)
 		}
 
-		if data.FakeParentId != nil {
-			uParentId, err := common.FromBase58(data.FakeParentId.String())
-			if err != nil {
-				panic(err)
-			}
-			data.ParentId = int(uParentId.GetLocalID())
-		}
-
 		store := categorystore.NewSqlStore(appCtx.GetDBConn())
 		repo := categoryrepo.NewUpdateCategoryRepo(store)
 		biz := categorybusiness.NewUpdateCategoryBusiness(repo)
 
-		if err := biz.UpdateCategory(c.Request.Context(), int(uid.GetLocalID()), &data); err != nil {
+		if err := biz.UpdateCategory(c.Request.Context(), uuid, &data); err != nil {
 			panic(err)
 		}
 

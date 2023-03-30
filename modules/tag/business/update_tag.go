@@ -8,7 +8,7 @@ import (
 )
 
 type UpdateTagRepo interface {
-	UpdateTag(ctx context.Context, id int, data *tagmodel.TagUpdate) error
+	UpdateTag(ctx context.Context, id string, data *tagmodel.TagUpdate) error
 }
 
 type updateTagBusiness struct {
@@ -19,7 +19,7 @@ func NewUpdateTagBusiness(repo UpdateTagRepo) *updateTagBusiness {
 	return &updateTagBusiness{repo: repo}
 }
 
-func (b *updateTagBusiness) UpdateTag(ctx context.Context, id int, data *tagmodel.TagUpdate) error {
+func (b *updateTagBusiness) UpdateTag(ctx context.Context, id string, data *tagmodel.TagUpdate) error {
 	if err := b.repo.UpdateTag(ctx, id, data); err != nil {
 		return common.ErrCannotUpdatedEntity(tagmodel.EntityName, err)
 	}

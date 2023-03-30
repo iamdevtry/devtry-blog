@@ -11,7 +11,7 @@ import (
 
 type UpdateCategoryStore interface {
 	Find(ctx context.Context, cond map[string]interface{}) (*categorymodel.Category, error)
-	Update(ctx context.Context, id int, data *categorymodel.CategoryUpdate) error
+	Update(ctx context.Context, id string, data *categorymodel.CategoryUpdate) error
 }
 
 type updateCategoryRepo struct {
@@ -22,7 +22,7 @@ func NewUpdateCategoryRepo(store UpdateCategoryStore) *updateCategoryRepo {
 	return &updateCategoryRepo{store: store}
 }
 
-func (repo *updateCategoryRepo) UpdateCategory(ctx context.Context, id int, data *categorymodel.CategoryUpdate) error {
+func (repo *updateCategoryRepo) UpdateCategory(ctx context.Context, id string, data *categorymodel.CategoryUpdate) error {
 	oldData, err := repo.store.Find(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
@@ -37,7 +37,7 @@ func (repo *updateCategoryRepo) UpdateCategory(ctx context.Context, id int, data
 		return common.ErrCannotCreateEntity(categorymodel.EntityName, err)
 	}
 
-	if data.ParentId != 0 {
+	if data.ParentId != nil && data.ParentId != oldData.ParentId {
 		parentCat, err := repo.store.Find(ctx, map[string]interface{}{"id": data.ParentId})
 
 		if err != nil {
