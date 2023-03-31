@@ -9,13 +9,13 @@ import (
 )
 
 type Image struct {
-	Id        uuid.UUID `json:"id" gorm:"column:id;"`
-	Url       string    `json:"url" gorm:"column:url;"`
-	Width     int       `json:"width" gorm:"column:width;"`
-	Height    int       `json:"height" gorm:"column:height;"`
-	CloudName string    `json:"cloud_name,omitempty" gorm:"column:cloud_name;"`
-	Extension string    `json:"extension,omitempty" gorm:"column:extension;"`
-	FileName  string    `json:"file_name,omitempty" gorm:"column:file_name;"`
+	Id        *uuid.UUID `json:"id" gorm:"column:id;"`
+	Url       string     `json:"url" gorm:"column:url;"`
+	Width     int        `json:"width" gorm:"column:width;"`
+	Height    int        `json:"height" gorm:"column:height;"`
+	CloudName string     `json:"cloud_name,omitempty" gorm:"column:cloud_name;"`
+	Extension string     `json:"extension,omitempty" gorm:"column:extension;"`
+	FileName  string     `json:"file_name,omitempty" gorm:"column:file_name;"`
 }
 
 func (Image) TableName() string {
