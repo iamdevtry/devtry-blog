@@ -10,6 +10,8 @@ import (
 func (s *sqlStore) Update(ctx context.Context, id string, data *postmodel.PostUpdate) error {
 	if err := s.db.Table(postmodel.PostUpdate{}.TableName()).Where("id = ?", id).
 		Updates(map[string]interface{}{
+			"title":      data.Title,
+			"slug":       data.Slug,
 			"parent_id":  data.ParentId,
 			"meta_title": data.MetaTitle,
 			"sumary":     data.Sumary,

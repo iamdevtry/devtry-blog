@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/iamdevtry/blog/common"
 )
@@ -29,11 +28,10 @@ func (Tag) TableName() string {
 }
 
 type TagCreate struct {
-	Status    int        `json:"status" gorm:"column:status;default:1"`
-	Title     string     `json:"title" gorm:"column:title;"`
-	Slug      string     `json:"slug" gorm:"column:slug;"`
-	CreatedAt *time.Time `json:"created_at,omitempty" gorm:"column:created_at;"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty" gorm:"column:updated_at;"`
+	common.SQLModel `json:",inline"`
+	Status          int    `json:"status" gorm:"column:status;default:1"`
+	Title           string `json:"title" gorm:"column:title;"`
+	Slug            string `json:"slug" gorm:"column:slug;"`
 }
 
 func (TagCreate) TableName() string {

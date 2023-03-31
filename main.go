@@ -71,14 +71,14 @@ func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey
 
 	tags := v1.Group("/tags")
 	{
-		tags.GET("", middleware.RequireAuth(appContext), tagtrans.ListTag(appContext))
-		tags.POST("", tagtrans.CreateTag(appContext))
-		tags.GET("/:id", middleware.RequireAuth(appContext), tagtrans.GetTagById(appContext))
-		tags.PUT("/:id", tagtrans.UpdateTag(appContext))
-		tags.DELETE("/:id", tagtrans.DeleteTag(appContext))
+		tags.GET("", tagtrans.ListTag(appContext))
+		tags.POST("", middleware.RequireAuth(appContext), tagtrans.CreateTag(appContext))
+		tags.GET("/:id", tagtrans.GetTagById(appContext))
+		tags.PUT("/:id", middleware.RequireAuth(appContext), tagtrans.UpdateTag(appContext))
+		tags.DELETE("/:id", middleware.RequireAuth(appContext), tagtrans.DeleteTag(appContext))
 
-		tags.POST("/add-post", posttagtrans.CreatePostTag(appContext))
-		tags.GET("/:id/posts", middleware.RequireAuth(appContext), posttagtrans.ListPostByCategory(appContext))
+		tags.POST("/add-post", middleware.RequireAuth(appContext), posttagtrans.CreatePostTag(appContext))
+		tags.GET("/:id/posts", posttagtrans.ListPostByCategory(appContext))
 	}
 
 	return route.Run()
