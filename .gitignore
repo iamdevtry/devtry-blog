@@ -22,3 +22,6 @@
 
 #Ignore .idea files
 /.idea
+
+# Ignore make files
+Makefile
