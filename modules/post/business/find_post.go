@@ -33,3 +33,17 @@ func (b *findPostBusiness) FindPostById(ctx context.Context, id string) (data *p
 
 	return data, nil
 }
+
+func (b *findPostBusiness) FindPostBySlug(ctx context.Context, slug string) (data *postmodel.Post, err error) {
+	data, err = b.repo.FindPost(ctx, map[string]interface{}{"slug": slug})
+
+	if err != nil {
+		return nil, common.ErrCannotGetEntity(postmodel.EntityName, err)
+	}
+
+	if data.Status == 0 {
+		return nil, common.ErrCannotGetEntity(postmodel.EntityName, errors.New("post not found"))
+	}
+
+	return data, nil
+}

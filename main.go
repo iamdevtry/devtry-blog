@@ -65,6 +65,7 @@ func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey
 		posts.GET("", posttrans.ListPost(appContext))
 		posts.POST("", middleware.RequireAuth(appContext), posttrans.CreatePost(appContext))
 		posts.GET("/:id", posttrans.GetPostById(appContext))
+		posts.GET("/slug/:slug", posttrans.GetPostBySlug(appContext))
 		posts.PUT("/:id", middleware.RequireAuth(appContext), posttrans.UpdatePost(appContext))
 		posts.DELETE("/:id", middleware.RequireAuth(appContext), posttrans.DeletePost(appContext))
 	}

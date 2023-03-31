@@ -27,3 +27,20 @@ func GetPostById(appCtx component.AppContext) gin.HandlerFunc {
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
 	}
 }
+
+func GetPostBySlug(appCtx component.AppContext) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		slug := c.Param("slug")
+
+		store := poststore.NewSqlStore(appCtx.GetDBConn())
+		repo := postrepo.NewFindPostRepo(store)
+		biz := postbusiness.NewFindPostBusiness(repo)
+
+		data, err := biz.FindPostBySlug(c.Request.Context(), slug)
+		if err != nil {
+			panic(err)
+		}
+
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
+	}
+}
