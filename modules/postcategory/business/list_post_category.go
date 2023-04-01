@@ -35,3 +35,16 @@ func (b *listPostCategoryBusiness) ListPostCategory(ctx context.Context,
 	}
 	return data, nil
 }
+
+func (b *listPostCategoryBusiness) ListPostCategoryBySlug(ctx context.Context,
+	slug string,
+	filter *postcategorymodel.Filter,
+	paging *common.Paging,
+) ([]common.SimplePost, error) {
+	data, err := b.repo.GetPostCategories(ctx, map[string]interface{}{"slug": slug}, filter, paging)
+
+	if err != nil {
+		return nil, common.ErrCannotListEntity(postcategorymodel.EntityName, err)
+	}
+	return data, nil
+}

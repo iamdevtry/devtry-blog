@@ -58,6 +58,7 @@ func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey
 
 		categories.POST("/add-post", middleware.RequireAuth(appContext), postcategorytrans.CreatePostCategory(appContext))
 		categories.GET("/:id/posts", postcategorytrans.ListPostByCategory(appContext))
+		categories.GET("/slug/:slug/posts", postcategorytrans.ListPostByCategorySlug(appContext))
 	}
 
 	posts := v1.Group("/posts")

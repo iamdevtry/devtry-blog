@@ -2,8 +2,11 @@ package postcategoryrepo
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
+	categoryrepo "github.com/iamdevtry/blog/modules/category/repo"
 	postcategorymodel "github.com/iamdevtry/blog/modules/postcategory/model"
 )
 
@@ -17,11 +20,15 @@ type ListPostCategoryStore interface {
 }
 
 type listPostCategoryRepo struct {
-	store ListPostCategoryStore
+	store        ListPostCategoryStore
+	findCatStore FindCategoryStore
 }
 
-func NewListPostCategoryRepo(store ListPostCategoryStore) *listPostCategoryRepo {
-	return &listPostCategoryRepo{store: store}
+func NewListPostCategoryRepo(store ListPostCategoryStore, findCatStore FindCategoryStore) *listPostCategoryRepo {
+	return &listPostCategoryRepo{
+		store:        store,
+		findCatStore: categoryrepo.FindCategoryStore(findCatStore),
+	}
 }
 
 func (r *listPostCategoryRepo) GetPostCategories(ctx context.Context,
@@ -30,7 +37,26 @@ func (r *listPostCategoryRepo) GetPostCategories(ctx context.Context,
 	paging *common.Paging,
 	moreKeys ...string,
 ) ([]common.SimplePost, error) {
-	data, err := r.store.ListPostCategoryByCondition(ctx, conditions, filter, paging, moreKeys...)
+	var catId uuid.UUID
+	if conditions != nil {
+		if slug, ok := conditions["slug"]; ok {
+			cat, err := r.findCatStore.Find(ctx, map[string]interface{}{"slug": slug})
+
+			if err != nil {
+				return nil, common.ErrCannotListEntity(postcategorymodel.EntityName, fmt.Errorf("cannot find category with slug %s", slug))
+			} else {
+				catId = cat.Id
+			}
+		}
+	}
+
+	if catId != uuid.Nil {
+		filter = &postcategorymodel.Filter{
+			CategoryId: catId,
+		}
+	}
+
+	data, err := r.store.ListPostCategoryByCondition(ctx, nil, filter, paging, moreKeys...)
 	if err != nil {
 		return nil, common.ErrCannotListEntity(postcategorymodel.EntityName, err)
 	}
