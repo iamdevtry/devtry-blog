@@ -9,6 +9,7 @@ import (
 	postbusiness "github.com/iamdevtry/blog/modules/post/business"
 	postrepo "github.com/iamdevtry/blog/modules/post/repo"
 	poststore "github.com/iamdevtry/blog/modules/post/store"
+	posttagstore "github.com/iamdevtry/blog/modules/posttag/store"
 )
 
 func ListPost(appCtx component.AppContext) gin.HandlerFunc {
@@ -25,7 +26,8 @@ func ListPost(appCtx component.AppContext) gin.HandlerFunc {
 		paging.Fulfill()
 
 		store := poststore.NewSqlStore(appCtx.GetDBConn())
-		repo := postrepo.NewListPostRepo(store)
+		listTagStore := posttagstore.NewSqlStore(appCtx.GetDBConn())
+		repo := postrepo.NewListPostRepo(store, listTagStore)
 		biz := postbusiness.NewListPostBusiness(repo)
 
 		result, err := biz.ListPost(c.Request.Context(), &paging)

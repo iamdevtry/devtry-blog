@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
 	posttagmodel "github.com/iamdevtry/blog/modules/posttag/model"
+	tagmodel "github.com/iamdevtry/blog/modules/tag/model"
 )
 
 func (s *sqlStore) ListPostTagByCondition(ctx context.Context,
@@ -64,4 +65,18 @@ func (s *sqlStore) ListPostTagByCondition(ctx context.Context,
 	}
 
 	return posts, nil
+}
+
+func (s *sqlStore) GetTagsByPostId(ctx context.Context, id string) ([]tagmodel.Tag, error) {
+	var result []tagmodel.Tag
+
+	if err := s.db.Table(posttagmodel.PostTag{}.TableName()).
+		Select("tags.id, tags.title, tags.slug").
+		Joins("INNER JOIN tags ON tags.id = post_tags.tag_id").
+		Where("post_id IN (?)", id).
+		Find(&result).Error; err != nil {
+		return nil, common.ErrDB(err)
+	}
+
+	return result, nil
 }

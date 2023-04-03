@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/iamdevtry/blog/common"
+
+	tagmodel "github.com/iamdevtry/blog/modules/tag/model"
 )
 
 const (
@@ -23,15 +25,16 @@ const (
 
 type Post struct {
 	common.SQLModel `json:",inline"`
-	ParentId        *uuid.UUID    `json:"parent_id,omitempty" gorm:"column:parent_id;"`
-	AuthorId        uuid.UUID     `json:"author_id" gorm:"column:author_id;"`
-	Title           string        `json:"title" gorm:"column:title;"`
-	MetaTitle       string        `json:"meta_title" gorm:"column:meta_title;"`
-	Slug            string        `json:"slug" gorm:"column:slug;"`
-	Sumary          string        `json:"sumary" gorm:"column:sumary;"`
-	Content         string        `json:"content" gorm:"column:content;"`
-	Thumbnail       *common.Image `json:"thumbnail" gorm:"column:thumbnail;"`
-	PublishedAt     *time.Time    `json:"published_at" gorm:"column:published_at;"`
+	ParentId        *uuid.UUID     `json:"parent_id,omitempty" gorm:"column:parent_id;"`
+	AuthorId        uuid.UUID      `json:"author_id" gorm:"column:author_id;"`
+	Title           string         `json:"title" gorm:"column:title;"`
+	MetaTitle       string         `json:"meta_title" gorm:"column:meta_title;"`
+	Slug            string         `json:"slug" gorm:"column:slug;"`
+	Sumary          string         `json:"sumary" gorm:"column:sumary;"`
+	Content         string         `json:"content" gorm:"column:content;"`
+	Thumbnail       *common.Image  `json:"thumbnail" gorm:"column:thumbnail;"`
+	PublishedAt     *time.Time     `json:"published_at" gorm:"column:published_at;"`
+	Tags            []tagmodel.Tag `json:"tags" gorm:"many2many:post_tags;"`
 }
 
 func (Post) TableName() string {

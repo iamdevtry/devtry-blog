@@ -5,6 +5,7 @@ import (
 
 	"github.com/iamdevtry/blog/common"
 	postmodel "github.com/iamdevtry/blog/modules/post/model"
+	tagmodel "github.com/iamdevtry/blog/modules/tag/model"
 )
 
 type ListPostStore interface {
@@ -16,12 +17,17 @@ type ListPostStore interface {
 	) ([]postmodel.Post, error)
 }
 
-type lisPostRepo struct {
-	store ListPostStore
+type ListTagByPostIdStore interface {
+	GetTagsByPostId(ctx context.Context, id string) ([]tagmodel.Tag, error)
 }
 
-func NewListPostRepo(store ListPostStore) *lisPostRepo {
-	return &lisPostRepo{store: store}
+type lisPostRepo struct {
+	store        ListPostStore
+	listTagStore ListTagByPostIdStore
+}
+
+func NewListPostRepo(store ListPostStore, listTagStore ListTagByPostIdStore) *lisPostRepo {
+	return &lisPostRepo{store: store, listTagStore: listTagStore}
 }
 
 func (r *lisPostRepo) ListPost(
@@ -32,6 +38,11 @@ func (r *lisPostRepo) ListPost(
 
 	if err != nil {
 		return nil, common.ErrCannotListEntity(postmodel.EntityName, err)
+	}
+
+	for i := 0; i < len(result); i++ {
+		tags, _ := r.listTagStore.GetTagsByPostId(ctx, result[i].Id.String())
+		result[i].Tags = tags
 	}
 
 	return result, nil

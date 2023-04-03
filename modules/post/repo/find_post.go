@@ -12,11 +12,12 @@ type FindPostStore interface {
 }
 
 type findPostRepo struct {
-	store FindPostStore
+	store        FindPostStore
+	listTagStore ListTagByPostIdStore
 }
 
-func NewFindPostRepo(store FindPostStore) *findPostRepo {
-	return &findPostRepo{store: store}
+func NewFindPostRepo(store FindPostStore, listTagStore ListTagByPostIdStore) *findPostRepo {
+	return &findPostRepo{store: store, listTagStore: listTagStore}
 }
 
 func (r *findPostRepo) FindPost(ctx context.Context, cond map[string]interface{}) (*postmodel.Post, error) {
@@ -25,6 +26,9 @@ func (r *findPostRepo) FindPost(ctx context.Context, cond map[string]interface{}
 	if err != nil {
 		return nil, common.ErrCannotGetEntity(postmodel.EntityName, err)
 	}
+
+	tags, _ := r.listTagStore.GetTagsByPostId(ctx, data.Id.String())
+	data.Tags = tags
 
 	return data, nil
 }

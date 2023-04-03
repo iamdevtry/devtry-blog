@@ -9,6 +9,7 @@ import (
 	postbusiness "github.com/iamdevtry/blog/modules/post/business"
 	postrepo "github.com/iamdevtry/blog/modules/post/repo"
 	poststore "github.com/iamdevtry/blog/modules/post/store"
+	posttagstore "github.com/iamdevtry/blog/modules/posttag/store"
 )
 
 func GetPostById(appCtx component.AppContext) gin.HandlerFunc {
@@ -16,7 +17,8 @@ func GetPostById(appCtx component.AppContext) gin.HandlerFunc {
 		uuid := c.Param("id")
 
 		store := poststore.NewSqlStore(appCtx.GetDBConn())
-		repo := postrepo.NewFindPostRepo(store)
+		listTagStore := posttagstore.NewSqlStore(appCtx.GetDBConn())
+		repo := postrepo.NewFindPostRepo(store, listTagStore)
 		biz := postbusiness.NewFindPostBusiness(repo)
 
 		data, err := biz.FindPostById(c.Request.Context(), uuid)
@@ -33,7 +35,8 @@ func GetPostBySlug(appCtx component.AppContext) gin.HandlerFunc {
 		slug := c.Param("slug")
 
 		store := poststore.NewSqlStore(appCtx.GetDBConn())
-		repo := postrepo.NewFindPostRepo(store)
+		listTagStore := posttagstore.NewSqlStore(appCtx.GetDBConn())
+		repo := postrepo.NewFindPostRepo(store, listTagStore)
 		biz := postbusiness.NewFindPostBusiness(repo)
 
 		data, err := biz.FindPostBySlug(c.Request.Context(), slug)
