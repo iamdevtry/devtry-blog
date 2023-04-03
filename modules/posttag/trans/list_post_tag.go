@@ -13,7 +13,7 @@ import (
 	posttagstore "github.com/iamdevtry/blog/modules/posttag/store"
 )
 
-func ListPostByCategory(appCtx component.AppContext) gin.HandlerFunc {
+func ListPostByTag(appCtx component.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		uid := c.Param("id")
 
