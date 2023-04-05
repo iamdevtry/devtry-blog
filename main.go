@@ -81,6 +81,8 @@ func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey
 
 		tags.POST("/add-post", middleware.RequireAuth(appContext), posttagtrans.CreatePostTag(appContext))
 		tags.GET("/:id/posts", posttagtrans.ListPostByTag(appContext))
+
+		tags.DELETE("/post-tag/:post_id/:tag_id", middleware.RequireAuth(appContext), posttagtrans.DeletePostTag(appContext))
 	}
 
 	return route.Run()
