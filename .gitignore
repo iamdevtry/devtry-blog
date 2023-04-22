@@ -25,3 +25,6 @@
 
 # Ignore make files
 Makefile
+
+#Docker compose files
+docker-compose.yaml
