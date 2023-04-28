@@ -13,7 +13,7 @@ const (
 	EntityName = "category"
 
 	TitleMaxLength = 75
-	TitleMinLength = 10
+	TitleMinLength = 1
 
 	MetaTitleMaxLength = 100
 
