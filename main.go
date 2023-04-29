@@ -25,13 +25,13 @@ import (
 	usertrans "github.com/iamdevtry/blog/modules/user/trans"
 )
 
-func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey string) error {
+func runService(db *gorm.DB, upProvider uploadprovider.UploadProvider, secretKey, corsUrl string) error {
 	appContext := component.NewAppContext(db, upProvider, secretKey)
 
 	route := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowOrigins = []string{corsUrl}
 	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
 
 	route.Use(cors.New(config), middleware.Recover(appContext))
@@ -118,7 +118,7 @@ func main() {
 
 	runDbMigaration(config.MigrationURL, config.DBDriver+"://"+config.DBSource)
 
-	if err := runService(db, s3Provider, config.SysSecretKey); err != nil {
+	if err := runService(db, s3Provider, config.SysSecretKey, config.CorsURL); err != nil {
 		log.Fatal("cannot run service:", err)
 	}
 }

@@ -8,6 +8,7 @@ type Config struct {
 	DBDriver     string `mapstructure:"DB_DRIVER"`
 	DBSource     string `mapstructure:"DB_SOURCE"`
 	MigrationURL string `mapstructure:"MIGRATION_URL"`
+	CorsURL      string `mapstructure:"CORS_URL"`
 	//s3 config
 	S3BucketName string `mapstructure:"S3_BUCKET_NAME"`
 	S3Region     string `mapstructure:"S3_REGION"`
