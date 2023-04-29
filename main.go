@@ -6,6 +6,9 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/iamdevtry/blog/component"
 	"github.com/iamdevtry/blog/component/uploadprovider"
 	"github.com/iamdevtry/blog/middleware"
@@ -113,7 +116,21 @@ func main() {
 		log.Fatal("cannot connect to db:", err)
 	}
 
+	runDbMigaration(config.MigrationURL, config.DBDriver+"://"+config.DBSource)
+
 	if err := runService(db, s3Provider, config.SysSecretKey); err != nil {
 		log.Fatal("cannot run service:", err)
 	}
+}
+
+func runDbMigaration(migrationUrl, dbSource string) {
+	migration, err := migrate.New(migrationUrl, dbSource)
+	if err != nil {
+		log.Fatal("cannot run migration:", err)
+	}
+	if err := migration.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatal("cannot run migrate up:", err)
+	}
+
+	log.Println("migration success")
 }
